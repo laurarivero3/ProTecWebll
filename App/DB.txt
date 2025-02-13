@@ -1,0 +1,109 @@
+create database app
+use app
+
+drop table puestos
+CREATE TABLE puestos (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    NombreDelPuesto VARCHAR(100) NOT NULL,
+   UNIQUE (NombreDelPuesto)  -- Índice único para que pueda ser referenciado
+);
+INSERT INTO puestos (NombreDelPuesto) VALUES ('Gerente');
+
+
+
+drop table empleados
+CREATE TABLE empleados (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    primerNombre VARCHAR(100) NOT NULL,
+    segundoNombre VARCHAR(100) NOT NULL,
+    primerApellido VARCHAR(100) NOT NULL,
+    segundoApellido VARCHAR(100) NOT NULL,
+    foto VARCHAR(100),
+    cv VARCHAR(100),
+    idpuesto VARCHAR(100) NOT NULL,  -- Cambiado a VARCHAR(100) para almacenar nombrepuesto en lugar de ID
+    fechaIngreso DATE NOT NULL,
+    FOREIGN KEY (idpuesto) REFERENCES puestos(NombreDelPuesto)  -- Clave foránea que apunta a nombrepuesto
+);
+
+ALTER TABLE empleados DROP FOREIGN KEY empleados_ibfk_1;
+
+ALTER TABLE empleados ADD CONSTRAINT empleados_ibfk_1
+FOREIGN KEY (idpuesto) REFERENCES puestos(NombreDelPuesto)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+
+
+INSERT INTO empleados (primerNombre, segundoNombre, primerApellido, segundoApellido, foto, cv, idpuesto, fechaIngreso) 
+VALUES ('Maria', 'Elena', 'Perez', 'Zambrana', 'foto1.jpg', 'cv1.pdf', 'Gerente', '2023-09-19');
+
+
+drop table usuarios
+CREATE TABLE usuarios (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    usuarios VARCHAR(100) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	correo VARCHAR(100) NOT NULL
+);
+INSERT INTO usuarios (usuarios, password, correo) VALUES ('mariaperez', 'contra123', 'mariaperez@gmail.com');
+
+select * from empleados
+select * from puestos
+select * from usuarios
+
+-------------------------------------------------------------------------------
+-- empleados = docentes
+-- puestos = materias
+-- usuarios = estudiantes  
+
+drop table Materias
+CREATE TABLE Materias (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    NombreMateria VARCHAR(100) NOT NULL,
+   UNIQUE (NombreMateria)  -- Índice único para que pueda ser referenciado
+);
+INSERT INTO Materias (NombreMateria) VALUES ('Programacion I');
+select * from Materias
+
+
+
+
+CREATE TABLE Docentes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    primerNombre VARCHAR(100) NOT NULL,
+    segundoNombre VARCHAR(100) NOT NULL,
+    primerApellido VARCHAR(100) NOT NULL,
+    segundoApellido VARCHAR(100) NOT NULL,
+    foto VARCHAR(100),
+    cv VARCHAR(100),
+    idmaterias VARCHAR(100) NOT NULL,  -- Cambiado a VARCHAR(100) para almacenar nombrepuesto en lugar de ID
+    fechaIngreso DATE NOT NULL,
+    FOREIGN KEY (idmaterias) REFERENCES Materias(NombreMateria)  -- Clave foránea que apunta a nombrepuesto
+);
+
+ALTER TABLE Docentes DROP FOREIGN KEY Docentes_ibfk_1;
+
+ALTER TABLE Docentes ADD CONSTRAINT Docentes_ibfk_1
+FOREIGN KEY (idmaterias) REFERENCES Materias(NombreMateria)
+ON UPDATE CASCADE ON DELETE RESTRICT;
+
+select * from Docentes
+
+
+INSERT INTO Docentes (primerNombre, segundoNombre, primerApellido, segundoApellido, foto, cv, idmaterias, fechaIngreso) 
+VALUES ('Maria', 'Elena', 'Perez', 'Zambrana', 'foto1.jpg', 'cv1.pdf', 'Programacion I', '2023-09-19');
+
+
+
+
+drop table Estudiantes
+CREATE TABLE Estudiantes (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    Estudiantes VARCHAR(100) NOT NULL,
+	password VARCHAR(100) NOT NULL,
+	correo VARCHAR(100) NOT NULL
+);
+INSERT INTO Estudiantes (Estudiantes, password, correo) VALUES ('Laura Rivero', 'contra123', 'sc.lauraandrea.rivero.p@upds.net.bo');
+select * from Estudiantes
+
+
+
